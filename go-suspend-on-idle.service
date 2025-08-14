@@ -7,30 +7,35 @@ Type=simple
 ExecStart=/usr/bin/go-suspend-on-idle
 Restart=on-failure
 
-# Additional hardening
-DevicePolicy=closed
-KeyringMode=private
-LockPersonality=yes
-MemoryDenyWriteExecute=yes
+# Core restrictions
 NoNewPrivileges=yes
 PrivateDevices=yes
-PrivateMounts=yes
 PrivateTmp=yes
+ProtectSystem=strict
 ProtectHome=yes
-ProtectClock=yes
+# Kernel protection
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
 ProtectControlGroups=yes
 ProtectHostname=yes
-ProtectKernelLogs=yes
-ProtectKernelModules=yes
-ProtectKernelTunables=yes
-ProtectProc=invisible
-ProtectSystem=strict
-RemoveIPC=yes
+ProtectClock=yes
+# Memory and execution
+MemoryDenyWriteExecute=yes
 RestrictNamespaces=yes
+LockPersonality=yes
 RestrictRealtime=yes
 RestrictSUIDSGID=yes
+# Credentials and IPC
+KeyringMode=private
+RemoveIPC=yes
+# Capabilities (remove all)
+CapabilityBoundingSet=
+AmbientCapabilities=
+# System calls
 SystemCallArchitectures=native
 SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources @mount
 
 [Install]
 WantedBy=multi-user.target

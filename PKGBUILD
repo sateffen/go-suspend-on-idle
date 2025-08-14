@@ -7,9 +7,9 @@ makedepends=('go' 'make')
 arch=('x86_64' 'aarch64')
 url="https://github.com/sateffen/go-suspend-on-idle"
 license=('MIT')
-source=('Makefile' 'main.go' 'isactive.go' 'go.mod' 'go-suspend-on-idle.service')
+source=('Makefile' 'main.go' 'isanyuseractive.go' 'isnetworkactive.go' 'go.mod' 'go-suspend-on-idle.service')
 
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 prepare() {
   export GOPATH="$srcdir/build"
