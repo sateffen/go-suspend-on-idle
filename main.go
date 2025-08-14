@@ -19,12 +19,10 @@ func getLogLevel(isVerbose bool) slog.Level {
 }
 
 func main() {
-	var networkInterfaceName string
 	var isVerbose bool
 	var idleTime int
 
-	flag.StringVar(&networkInterfaceName, "interface", "eth0", "")
-	flag.BoolVar(&isVerbose, "verbose", false, "")
+	flag.BoolVar(&isVerbose, "verbose", true, "")
 	flag.IntVar(&idleTime, "idletime", 3, "")
 	flag.Parse()
 
@@ -38,7 +36,7 @@ func main() {
 
 	checkActivityTicker := time.NewTicker(1 * time.Minute)
 
-	slog.Debug("starting with configuration:", slog.String("interface", networkInterfaceName), slog.Bool("verbose", isVerbose))
+	slog.Debug("starting with configuration:", slog.Bool("verbose", isVerbose))
 	slog.Info("started successfully")
 
 	currentInactivityCounter := 0
@@ -49,7 +47,7 @@ func main() {
 			slog.Info("Got closing signal, exiting...", slog.Any("receivedSignal", receivedSignal))
 			return
 		case <-checkActivityTicker.C:
-			if isNetworkActive(networkInterfaceName) || isAnyUserActive() {
+			if isNetworkActive() || isAnyUserActive() {
 				slog.Debug("system is in use, skip suspending...")
 				currentInactivityCounter = 0
 				continue

@@ -5,8 +5,8 @@ This is a small helper tool for my private homeserver. It checks if the system i
 ## How it works
 
 - Monitors system activity to detect idleness:
-  - Checks for no active TCP connections on a specified ethernet interface.
-  - Checks for no active user sessions on the system.
+  - Checks for no active non-localhost TCP connections by parsing kernel network information from `/proc/net/tcp` and `/proc/net/tcp6`.
+  - Checks for no active user sessions using `loginctl`.
 - If the system is idle, it calls `systemctl suspend` to suspend the system.
 
 ## Building the project
@@ -37,12 +37,10 @@ This will use `makepkg` to create a package file for Arch Linux, which you can t
 
 The following command-line options are available:
 
-- `-interface` (default: `eth0`):
-  Specify the ethernet interface to monitor for active TCP connections.
-- `-verbose`:
+- `-verbose` (default: `false`):
   Enable verbose (debug) logging output.
 - `-idletime` (default: `3`):
-  Set the number of minutes the system must be idle (no active TCP connections and no user sessions) before suspending.
+  Set the number of minutes the system must be idle (no active non-localhost TCP connections and no user sessions) before suspending.
 
 If you want to use these options when running the program as a service, you may need to add them to the `ExecStart` line in your systemd unit file.
 
