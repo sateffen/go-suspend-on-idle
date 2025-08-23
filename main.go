@@ -22,8 +22,8 @@ func main() {
 	var isVerbose bool
 	var idleTime int
 
-	flag.BoolVar(&isVerbose, "verbose", true, "")
-	flag.IntVar(&idleTime, "idletime", 3, "")
+	flag.BoolVar(&isVerbose, "verbose", true, "Enable verbose logging (default: false)")
+	flag.IntVar(&idleTime, "idle-minutes", 3, "Minutes to wait before suspending (default: 3)")
 	flag.Parse()
 
 	globalLogger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
@@ -60,7 +60,7 @@ func main() {
 				continue
 			}
 
-			slog.Debug("system is inactive for long peroid, start suspending...")
+			slog.Debug("system is inactive for long period, start suspending...")
 			err := exec.Command("systemctl", "suspend").Run()
 			if err != nil {
 				slog.Error("error executing 'systemctl suspend'", slog.Any("error", err))
