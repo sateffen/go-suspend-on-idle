@@ -1,11 +1,11 @@
-mod isanyuseractive;
 mod isnetworkactive;
+mod systemdbindings;
 
-use crate::isanyuseractive::is_any_user_active;
 use crate::isnetworkactive::is_network_active;
+use crate::systemdbindings::{has_active_user_sessions, systemd_suspend};
 use log::{debug, error, warn, LevelFilter};
 use simple_logger::SimpleLogger;
-use std::{env, error, thread, time, process::Command};
+use std::{env, error, thread, time};
 
 struct CLIArgs {
     verbose: bool,
@@ -68,7 +68,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
     loop {
         thread::sleep(one_minute);
 
-        if is_network_active()? || is_any_user_active()? {
+        if is_network_active()? || has_active_user_sessions()? {
             debug!("system is in use, skip suspending...");
             current_inactivity_counter = 0;
             continue;
@@ -83,17 +83,10 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         }
 
         debug!("system is inactive for long period, start suspending...");
-        let suspend_result = Command::new("systemctl")
-            .arg("suspend")
-            .status();
+        let suspend_result = systemd_suspend();
 
         match suspend_result {
-            Ok(status) => {
-                if !status.success() {
-                    error!("error executing 'systemctl suspend', exitcode: {}", status.code().unwrap_or(-1));
-                    continue;
-                }
-                // else we are back from suspend
+            Ok(_) => {
                 current_inactivity_counter = 0;
             }
             Err(error) => {
