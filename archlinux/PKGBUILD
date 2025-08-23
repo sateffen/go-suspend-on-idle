@@ -1,0 +1,44 @@
+_pkgname=go-suspend-on-idle
+pkgname=$_pkgname-git
+pkgdesc='Go Suspend on Idle'
+pkgver=r7.61a7c7f
+pkgrel=1
+depends=('systemd')
+makedepends=('go' 'make')
+arch=('x86_64' 'aarch64')
+license=('MIT')
+url='https://github.com/sateffen/go-suspend-on-idle'
+source=('git+https://github.com/sateffen/go-suspend-on-idle.git')
+sha256sums=('SKIP')
+
+pkgver() {
+  # see https://wiki.archlinux.org/title/VCS_package_guidelines#The_pkgver()_function
+  cd "$_pkgname"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+prepare() {
+  export GOPATH="$srcdir/build"
+  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+
+  cd "$_pkgname"
+  go mod download
+}
+
+build() {
+  export GOPATH="$srcdir/build"
+  export CGO_CPPFLAGS="${CPPFLAGS}"
+  export CGO_CFLAGS="${CFLAGS}"
+  export CGO_CXXFLAGS="${CXXFLAGS}"
+  export CGO_LDFLAGS="${LDFLAGS}"
+  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+
+  cd "$_pkgname"
+  go build -o $_pkgname *.go
+}
+
+package() {
+  install -Dm755 "$srcdir/$_pkgname/$_pkgname" "$pkgdir/usr/bin/go-suspend-on-idle"
+  install -Dm644 "$srcdir/$_pkgname/go-suspend-on-idle.service" "$pkgdir/usr/lib/systemd/system/go-suspend-on-idle.service"
+  install -Dm644 "$srcdir/$_pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

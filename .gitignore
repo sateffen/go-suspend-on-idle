@@ -1,9 +1,5 @@
 .*
-
-bin/
-pkg/
-src/
-*.tar.gz
-*.pkg.tar.zst
-
 !.gitignore
+
+archlinux/*
+!archlinux/PKGBUILD

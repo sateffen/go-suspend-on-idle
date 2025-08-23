@@ -13,25 +13,24 @@ This is a small helper tool for my private homeserver. It checks if the system i
 
 There are two main ways to build this project:
 
-### 1. Build with Make
+### 1. Build with Go
 
-You can build the binary using the provided Makefile:
+You can build the binary by just using Go:
 
 ```sh
-make build
+go build -o go-suspend-on-idle *.go
 ```
-
-The compiled binary will be placed in the `bin/` directory.
 
 ### 2. Build an Arch Linux package
 
-If you want to build an Arch package, use:
+If you want to build an Arch package, you can use the PKGBUILD in the archlinux/ folder:
 
 ```sh
-make arch-package
+cd archlinux
+makepkg
 ```
 
-This will use `makepkg` to create a package file for Arch Linux, which you can then install with `pacman`.
+Then you can install the resulting package with `pacman`.
 
 ## Available options
 
