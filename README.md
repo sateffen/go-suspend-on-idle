@@ -44,6 +44,10 @@ The following command-line options are available:
 
 If you want to use these options when running the program as a service, you may need to add them to the `ExecStart` line in your systemd unit file.
 
+## Go Implementation
+
+This project was originally implemented in Go before being ported to Rust. You can find the Go source code on the "go-implementation" branch. That version is considered legacy but implements the same features and works just fine.
+
 ## Disclaimer
 
 This project is just something I made for my own homeserver. You can use or fork it if you want, but don't expect me to add features for you. Use it at your own risk.
