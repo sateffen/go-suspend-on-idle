@@ -13,12 +13,13 @@ This is a small helper tool for my private homeserver. It checks if the system i
 
 There are two main ways to build this project:
 
-### 1. Build with Go
+### 1. Build with Cargo
 
-You can build the binary by just using Go:
+You can build the binary by just using Cargo:
 
 ```sh
-go build -o go-suspend-on-idle *.go
+cargo fetch
+cargo build --release
 ```
 
 ### 2. Build an Arch Linux package
@@ -36,9 +37,9 @@ Then you can install the resulting package with `pacman`.
 
 The following command-line options are available:
 
-- `-verbose` (default: `false`):
+- `-v, --verbose` (default: `false`):
   Enable verbose (debug) logging output.
-- `-idletime` (default: `3`):
+- `-i, --idle-time` (default: `3`):
   Set the number of minutes the system must be idle (no active non-localhost TCP connections and no user sessions) before suspending.
 
 If you want to use these options when running the program as a service, you may need to add them to the `ExecStart` line in your systemd unit file.
