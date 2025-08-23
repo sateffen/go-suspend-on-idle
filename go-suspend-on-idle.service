@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/go-suspend-on-idle
+Environment="GOMAXPROCS=1"
 Restart=on-failure
 
 # Core restrictions
