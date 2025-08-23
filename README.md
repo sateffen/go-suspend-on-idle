@@ -2,6 +2,9 @@
 
 This is a small helper tool for my private homeserver. It checks if the system is idle and, if so, runs `systemctl suspend` to put the system into suspend mode.
 
+> [!NOTE] 
+> This is the legacy Go implementation. This implementation was replaced by the Rust implementation on main, but it has been kept in its own branch just in case.
+
 ## How it works
 
 - Monitors system activity to detect idleness:

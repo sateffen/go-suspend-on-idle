@@ -1,14 +1,14 @@
 _pkgname=go-suspend-on-idle
 pkgname=$_pkgname-git
 pkgdesc='Go Suspend on Idle'
-pkgver=r7.61a7c7f
+pkgver=r9.1934082
 pkgrel=1
 depends=('systemd')
 makedepends=('go' 'make')
 arch=('x86_64' 'aarch64')
 license=('MIT')
 url='https://github.com/sateffen/go-suspend-on-idle'
-source=('git+https://github.com/sateffen/go-suspend-on-idle.git')
+source=('git+https://github.com/sateffen/go-suspend-on-idle.git#branch=go-implementation')
 sha256sums=('SKIP')
 
 pkgver() {
