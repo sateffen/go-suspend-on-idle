@@ -11,5 +11,5 @@ func isAnyUserActive() bool {
 		return true
 	}
 
-	return strings.Contains(string(cmdOutput), "active")
+	return strings.TrimSpace((string(cmdOutput))) != ""
 }
