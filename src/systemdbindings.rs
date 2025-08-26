@@ -108,7 +108,12 @@ pub fn systemd_suspend() -> Result<(), String> {
             // clean up all references, so we don't leak any memory
             sd_bus_error_free(&mut call_error);
             sd_bus_unref(bus);
-            // and return the error message
+            
+            // of the message contains "already in progress" the system tries to suspend - we treat that as success.
+            if error_msg.contains("already in progress") {
+                return Ok(())    
+            }
+            // else return the error
             return Err(error_msg);
         }
         // else the call was successful, so we clean up and return Ok.
