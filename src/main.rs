@@ -9,12 +9,14 @@ use std::{env, error, thread, time};
 
 struct CLIArgs {
     verbose: bool,
+    shutdown: bool,
     idle_minutes: u8,
 }
 
 fn parse_cli_args() -> CLIArgs {
     let mut args = CLIArgs {
         verbose: false,
+        shutdown: false,
         idle_minutes: 3,
     };
 
@@ -26,6 +28,9 @@ fn parse_cli_args() -> CLIArgs {
         match cli_args[i].as_str() {
             "-v" | "--verbose" => {
                 args.verbose = true;
+            }
+            "-s" | "--shutdown" => {
+                args.shutdown = true;
             }
             "-i" | "--idle-minutes" => {
                 if i + 1 < cli_args.len() {
@@ -83,7 +88,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         }
 
         debug!("system is inactive for long period, start suspending...");
-        let suspend_result = systemd_suspend();
+        let suspend_result = systemd_suspend(cli_args.shutdown);
 
         match suspend_result {
             Ok(_) => {

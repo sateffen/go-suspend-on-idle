@@ -58,7 +58,7 @@ unsafe extern "C" {
 //#############################################################################
 
 /// Suspends the system using systemd.
-pub fn systemd_suspend() -> Result<(), String> {
+pub fn systemd_suspend(shutdown_instead: bool) -> Result<(), String> {
     unsafe {
         // first we get a dbus-reference so we can talk with systemd
         let mut bus: *mut SdBus = ptr::null_mut();
@@ -66,12 +66,12 @@ pub fn systemd_suspend() -> Result<(), String> {
         if return_code < 0 {
             return Err(format!("Failed to get system bus, return-code: {}", return_code));
         }
-        
+
         // then we prepare a couple of strings we need for talking with systemd
         let dbus_destination = CString::new("org.freedesktop.login1").unwrap();
         let dbus_path = CString::new("/org/freedesktop/login1").unwrap();
         let dbus_interface = CString::new("org.freedesktop.login1.Manager").unwrap();
-        let dbus_member = CString::new("Suspend").unwrap();
+        let dbus_member = CString::new(if shutdown_instead {"Poweroff"} else {"Suspend"}).unwrap();
         let dbus_types = CString::new("b").unwrap(); // boolean parameter
 
         // and prepare some more structs that we need for getting the results of systemd
