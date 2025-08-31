@@ -1,7 +1,7 @@
 _pkgname=go-suspend-on-idle
 pkgname=$_pkgname-git
 pkgdesc='Go Suspend on Idle'
-pkgver=r9.dfbe818
+pkgver=r14.83d0d7c
 pkgrel=1
 depends=('systemd-libs')
 makedepends=('cargo')

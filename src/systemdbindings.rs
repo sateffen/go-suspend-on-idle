@@ -71,7 +71,7 @@ pub fn systemd_suspend(shutdown_instead: bool) -> Result<(), String> {
         let dbus_destination = CString::new("org.freedesktop.login1").unwrap();
         let dbus_path = CString::new("/org/freedesktop/login1").unwrap();
         let dbus_interface = CString::new("org.freedesktop.login1.Manager").unwrap();
-        let dbus_member = CString::new(if shutdown_instead {"Poweroff"} else {"Suspend"}).unwrap();
+        let dbus_member = CString::new(if shutdown_instead {"PowerOff"} else {"Suspend"}).unwrap();
         let dbus_types = CString::new("b").unwrap(); // boolean parameter
 
         // and prepare some more structs that we need for getting the results of systemd
