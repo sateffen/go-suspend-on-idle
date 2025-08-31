@@ -1,10 +1,11 @@
 mod isnetworkactive;
+mod locallogger;
 mod systemdbindings;
 
 use crate::isnetworkactive::is_network_active;
+use crate::locallogger::LocalLogger;
 use crate::systemdbindings::{has_active_user_sessions, systemd_suspend};
-use log::{debug, error, warn, LevelFilter};
-use simple_logger::SimpleLogger;
+use log::{debug, error, warn};
 use std::{env, error, thread, time};
 
 struct CLIArgs {
@@ -62,10 +63,16 @@ fn parse_cli_args() -> CLIArgs {
 fn main() -> Result<(), Box<dyn error::Error>> {
     let cli_args = parse_cli_args();
 
-    SimpleLogger::new()
-        .with_level(if cli_args.verbose {LevelFilter::Debug} else {LevelFilter::Info})
-        .env()
-        .init()?;
+    let mut logger: LocalLogger = LocalLogger{
+        log_level: log::Level::Info,
+    };
+
+    if cli_args.verbose {
+        logger.log_level = log::Level::Debug;
+    }
+
+    let log_level_filter = logger.log_level.to_level_filter();
+    log::set_boxed_logger(Box::new(logger)).map(move |()| log::set_max_level(log_level_filter))?;
 
     let mut current_inactivity_counter: u8 = 0;
     let one_minute = time::Duration::from_secs(60);
