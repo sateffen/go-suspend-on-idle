@@ -61,18 +61,12 @@ fn parse_cli_args() -> CLIArgs {
 }
 
 fn main() -> Result<(), Box<dyn error::Error>> {
+    LocalLogger::setup()?;
     let cli_args = parse_cli_args();
 
-    let mut logger: LocalLogger = LocalLogger{
-        log_level: log::Level::Info,
-    };
-
     if cli_args.verbose {
-        logger.log_level = log::Level::Debug;
+        log::set_max_level(log::Level::Debug.to_level_filter());
     }
-
-    let log_level_filter = logger.log_level.to_level_filter();
-    log::set_boxed_logger(Box::new(logger)).map(move |()| log::set_max_level(log_level_filter))?;
 
     let mut current_inactivity_counter: u8 = 0;
     let one_minute = time::Duration::from_secs(60);
