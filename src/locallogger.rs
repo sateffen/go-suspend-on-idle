@@ -23,7 +23,9 @@ impl LocalLogger {
         let logger = Self { log_level };
         let log_level_filter = logger.log_level.to_level_filter();
 
-        log::set_boxed_logger(Box::new(logger)).map(move |()| log::set_max_level(log_level_filter))?;
+        log::set_boxed_logger(Box::new(logger))
+            .map(move |()| log::set_max_level(log_level_filter))
+            .map_err(|e| format!("failed to install local logger: {e}"))?;
 
         Ok(())
     }
@@ -41,7 +43,7 @@ impl log::Log for LocalLogger {
     }
 
     fn flush(&self) {
-        io::stdout().lock().flush().unwrap();
-        io::stderr().lock().flush().unwrap();
+        let _ = io::stdout().lock().flush();
+        let _ = io::stderr().lock().flush();
     }
 }
