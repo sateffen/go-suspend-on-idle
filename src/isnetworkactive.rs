@@ -38,8 +38,8 @@ fn is_localhost_hex(address: &str) -> bool {
 
     match ip_hex_string {
         Some(hex) => {
-            (hex.len() == 8 && hex.starts_with("7F")) ||
-            (hex.len() == 32 && hex == "00000000000000000000000000000001")
+            (hex.len() == 8 && hex.ends_with("7F")) ||
+            (hex.len() == 32 && hex == "00000000000000000000000001000000")
         }
         None => false,
     }
