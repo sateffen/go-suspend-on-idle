@@ -2,6 +2,7 @@
     "name": "go-suspend-on-idle",
     "dockerComposeFile": "docker-compose.yml",
     "service": "app",
+    "remoteUser": "dev",
     "workspaceFolder": "/workspace",
     "postStartCommand": "/startup.sh",
     "waitFor": "postStartCommand",
@@ -9,7 +10,6 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "golang.go",
                 "rust-lang.rust-analyzer",
                 "tamasfe.even-better-toml"
             ]
