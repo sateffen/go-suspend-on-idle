@@ -1,15 +1,21 @@
 _pkgname=go-suspend-on-idle
 pkgname=$_pkgname-git
 pkgdesc='Go Suspend on Idle'
-pkgver=r14.83d0d7c
+pkgver=r0
 pkgrel=1
 depends=('systemd-libs')
-makedepends=('cargo')
+makedepends=('rust')
 arch=('x86_64')
 license=('MIT')
 url='https://github.com/sateffen/go-suspend-on-idle'
 source=('git+https://github.com/sateffen/go-suspend-on-idle.git')
 sha256sums=('SKIP')
+
+# Use debug
+export CARGO_PROFILE_RELEASE_DEBUG=2 CARGO_PROFILE_RELEASE_STRIP=false
+
+# Use LTO
+export CARGO_PROFILE_RELEASE_LTO=true CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
 
 pkgver() {
   # see https://wiki.archlinux.org/title/VCS_package_guidelines#The_pkgver()_function
@@ -18,15 +24,11 @@ pkgver() {
 }
 
 prepare() {
-  export RUSTUP_TOOLCHAIN=stable
   cd "$_pkgname"
-  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+  cargo fetch --locked --target host-tuple
 }
 
 build() {
-  export RUSTUP_TOOLCHAIN=stable
-  export CARGO_TARGET_DIR=target
-
   cd "$_pkgname"
   cargo build --frozen --release
 }
