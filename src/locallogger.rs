@@ -1,6 +1,6 @@
 use std::io::{self, Write};
 
-use log::{Record, Level, Metadata};
+use log::{Level, Metadata, Record, warn};
 
 pub struct LocalLogger {
     pub log_level: Level,
@@ -16,7 +16,10 @@ impl LocalLogger {
                 "warn" => log::Level::Warn,
                 "warning" => log::Level::Warn,
                 "error" => log::Level::Error,
-                _ => log::Level::Info,
+                _ => {
+                    warn!("Unrecognized value for env var LOG_LEVEL: {value}");
+                    log::Level::Info
+                },
             }
             Err(_) => log::Level::Info,
         };

@@ -11,7 +11,7 @@ use std::{env, error, thread, time};
 struct CLIArgs {
     verbose: bool,
     shutdown: bool,
-    idle_minutes: u8,
+    idle_minutes: u32,
 }
 
 fn parse_cli_args() -> CLIArgs {
@@ -35,7 +35,7 @@ fn parse_cli_args() -> CLIArgs {
             }
             "-i" | "--idle-minutes" => {
                 if i + 1 < cli_args.len() {
-                    if let Ok(minutes) = cli_args[i + 1].parse::<u8>() {
+                    if let Ok(minutes) = cli_args[i + 1].parse::<u32>() {
                         args.idle_minutes = minutes;
                     } else {
                         error!("Invalid value for idle minutes: {}", cli_args[i + 1]);
@@ -61,7 +61,7 @@ fn parse_cli_args() -> CLIArgs {
         i += 1;
     }
     
-    return args;
+    args
 }
 
 fn main() -> Result<(), Box<dyn error::Error>> {
@@ -72,7 +72,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         log::set_max_level(log::Level::Debug.to_level_filter());
     }
 
-    let mut current_inactivity_counter: u8 = 0;
+    let mut current_inactivity_counter: u32 = 0;
     let one_minute = time::Duration::from_secs(60);
 
     loop {
