@@ -42,6 +42,9 @@ fn parse_cli_args() -> CLIArgs {
                         std::process::exit(1);
                     }
                     i += 1;
+                } else {
+                        error!("Missing vlue for idle minutes");
+                        std::process::exit(1);
                 }
             }
             "-h" | "--help" => {
@@ -49,6 +52,7 @@ fn parse_cli_args() -> CLIArgs {
                 println!("Options:");
                 println!("  -v, --verbose          Enable verbose logging (default: false)");
                 println!("  -i, --idle-minutes N   Minutes to wait before suspending (default: 3)");
+                println!("  -s, --shutdown         Shutdown instead of suspend (default: false)");
                 println!("  -h, --help             Show this help message");
                 std::process::exit(0);
             }

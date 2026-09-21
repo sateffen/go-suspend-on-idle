@@ -41,6 +41,8 @@ The following command-line options are available:
   Enable verbose (debug) logging output.
 - `-i, --idle-time` (default: `3`):
   Set the number of minutes the system must be idle (no active non-localhost TCP connections and no user sessions) before suspending.
+- `-i, --shutdown` default: `false`):
+  Shut down instead of suspend.
 
 If you want to use these options when running the program as a service, you may need to add them to the `ExecStart` line in your systemd unit file.
 
