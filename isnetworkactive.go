@@ -63,12 +63,12 @@ func isLocalhostHex(addrPort string) bool {
 
 	// IPv4: 127.x.x.x range (127.0.0.0/8)
 	if len(hexAddr) == 8 {
-		return hexAddr[:2] == "7F"
+		return hexAddr[len(hexAddr)-2:] == "7F"
 	}
 
 	// IPv6: Only ::1 exactly
 	if len(hexAddr) == 32 {
-		return hexAddr == "00000000000000000000000000000001"
+		return hexAddr == "00000000000000000000000001000000"
 	}
 
 	return false
